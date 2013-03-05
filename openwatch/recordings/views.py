@@ -71,10 +71,15 @@ def upload_no_captcha(request):
             # privDesc = privDesc + "[" + email + "]";
 
             #recording.email = request.POST.get('private_description', '').rsplit("[", 1)[1].rsplit("]", 1)[0]
-            potential_email = request.POST.get('private_description', '').rsplit("[", 1)[1].rsplit("]", 1)[0]
+            potential_emails = request.POST.get('private_description', '').rsplit("[", 1)[1].rsplit("]", 1)
+            potential_email = ''
+            if len(potential_emails) > 0:
+                potential_email = potential_emails[0]
             if validate_email(potential_email):
                 recording.email = potential_email
-                recording.private_description = request.POST.get('private_description', 'No description available').rsplit("[", 1)[0]
+                private_descriptions = request.POST.get('private_description', 'No description available').rsplit("[", 1)
+                if len(private_descriptions) > 0:
+                    recording.private_description = private_descriptions[0]
             else:
                 recording.private_description = request.POST.get('private_description', 'No description available')
         else:
